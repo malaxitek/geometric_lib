@@ -51,6 +51,22 @@ jobs:
         shell: pwsh
         run: |
           Get-ScriptAnalyzerRule
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest coverage
+      - name: Test with pytest
+        run: |
+          coverage run Unittest_circle.py
+          coverage run Unittest_rectangle.py
+          coverage run Unittest_square.py
+          coverage run Unittest_triangle.py
+      - name: Tests report
+        run: coverage report
 
   deploy:
     needs: test-ubuntu
