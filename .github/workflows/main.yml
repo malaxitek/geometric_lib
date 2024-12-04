@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  test-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -36,11 +36,28 @@ jobs:
           coverage run Unittest_triangle.py
       - name: Tests report
         run: coverage report
+        
+  test-windows:
+    name: Run PSScriptAnalyzer on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PSScriptAnalyzer module
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -ErrorAction Stop
+      - name: Get list of rules
+        shell: pwsh
+        run: |
+          Get-ScriptAnalyzerRule
 
   deploy:
-    needs: test
+    needs: test-ubuntu
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    env:
+      LOGIN: ${{ secrets.DOCKER_LOGIN }}
+      NAME: ${{ secrets.DOCKER_NAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
