@@ -36,7 +36,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install PSScriptAnalyzer module
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
