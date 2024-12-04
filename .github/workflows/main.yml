@@ -25,11 +25,15 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install dependencies
-        run: |
-          run: pip install -r requirements.txt
+        run: pip install -r requirements.txt
       - name: Test with pytest
         run: |
-          pytest
+          Unittest_circle.py
+          Unittest_rectangle.py
+          Unittest_square.py
+          Unittest_triangle.py
+      - name: Tests report
+        run: coverage report
 
   deploy:
     needs: test
